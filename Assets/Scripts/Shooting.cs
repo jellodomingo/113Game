@@ -9,12 +9,20 @@ public class Shooting : MonoBehaviour
 
     public float bulletForce = 20f;
 
+    private bool ShootHeldDown = false;
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButtonDown("Fire1") && !ShootHeldDown)
         {
             Shoot();
+            ShootHeldDown = !ShootHeldDown;
+        }
+
+        if (Input.GetButtonUp("Fire1") && ShootHeldDown)
+        {
+            ShootHeldDown = !ShootHeldDown;
         }
     }
 
