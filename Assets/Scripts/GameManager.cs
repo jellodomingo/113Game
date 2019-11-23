@@ -11,11 +11,18 @@ public class GameManager : MonoBehaviour
      * - Health
      * - Abilites
      * - Score
-     * 
+     * - Zombie Kill Count
+     *
     */
     public static GameManager Instance { get; private set; } 
 
     public GameObject player;
+
+    public int PlayerHealth = 100;
+
+    public int PistolAmmoCount = 30;
+    public int AutomaticAmmoCount = 100;
+    public int ShotgunAmmoCount = 10;
 
     void Awake()
     {
@@ -24,15 +31,94 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // Start is called before the first frame update
-    void Start()
+    //Player Health Up
+    public void PlayerHealthUp(int amount)
     {
-        
+        //TODO: Cap health
+
+        PlayerHealth += amount;
     }
 
-    // Update is called once per frame
-    void Update()
+    //Player Health Down
+    public void PlayerHealthDown(int amount)
     {
-        
+        //TODO: Cap health to 0
+
+        PlayerHealth -= amount;
     }
+
+    //Ammo Up
+    public void AmmoUp(int weapon,int amount)
+    {
+        //TODO: Cap ammo
+        switch (weapon)
+        {
+            case 0:
+                PistolAmmoCount += amount;
+
+                break;
+            case 1:
+                AutomaticAmmoCount += amount;
+
+                break;
+            case 2:
+                ShotgunAmmoCount += amount;
+                break;
+        }
+
+    }
+
+    //Ammo Down
+    public void AmmoDown(int weapon, int amount)
+    {
+        //TODO: Cap ammo to 0
+
+        switch (weapon)
+        {
+            case 0:
+                PistolAmmoCount -= amount;
+
+                break;
+            case 1:
+                AutomaticAmmoCount -= amount;
+
+                break;
+            case 2:
+                ShotgunAmmoCount -= amount;
+                break;
+        }
+    }
+
+    public bool CanShoot(int weapon)
+    {
+        switch (weapon)
+        {
+            case 0:
+                if (PistolAmmoCount <= 0) return false;
+                else return true;
+
+            case 1:
+                if (AutomaticAmmoCount <= 0) return false;
+                else return true;
+;
+            case 2:
+                if (ShotgunAmmoCount <= 0) return false;
+                else return true;
+
+            default:
+                return false;
+
+        }
+    }
+
+
+    public void DisplayStatus()
+    {
+        Debug.Log("Player Health: " + PlayerHealth);
+        Debug.Log("Pistol Ammo: " + PistolAmmoCount);
+        Debug.Log("AR Ammo: " + AutomaticAmmoCount);
+        Debug.Log("Shotgun Ammo: " + ShotgunAmmoCount);
+
+    }
+
 }

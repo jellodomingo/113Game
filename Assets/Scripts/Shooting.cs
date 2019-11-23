@@ -6,9 +6,9 @@ public class Shooting : MonoBehaviour
 {
     public GameObject bullet; //Bullet Prefab
 
-    public float bulletForce = 20f;
+    public float bulletForce = 100f;
 
-    private float FireRate = 10;
+    private float AutomaticFireRate = 10;
     private float lastfired;
 
     private int WeaponState = 0;
@@ -20,24 +20,41 @@ public class Shooting : MonoBehaviour
         switch (WeaponState)
         {
             case 0:
-                SingleShot();
+                if (checkAmmo(WeaponState))
+                {
+                    SingleShot();
+                }
+                
                 break;
             case 1:
-                AutomaticShot();
+                if (checkAmmo(WeaponState))
+                {
+                    AutomaticShot();
+                }
+                
                 break;
             case 2:
-                ShotgunShot();
+                if (checkAmmo(WeaponState))
+                {
+                    ShotgunShot();
+                }
+                
                 break;
         }
     }
 
-    void WeaponCheck()
+    private bool checkAmmo(int weapon)
+    {
+        return GameManager.Instance.CanShoot(weapon);
+    }
+
+    private void WeaponCheck()
     {
         this.transform.GetChild(WeaponState).gameObject.SetActive(false);
         WeaponInputCheck();
     }
 
-    void WeaponInputCheck()
+    private void WeaponInputCheck()
     {
         if (Input.GetKey("1"))
         {
@@ -68,28 +85,53 @@ public class Shooting : MonoBehaviour
         rb.AddForce(transform.up * bulletForce, ForceMode2D.Impulse);
     }
 
-    void SingleShot()
+    private void SpreadShoot()
+    {
+        //Spawn bullet
+        GameObject b = Instantiate(bullet, transform.position, transform.rotation);
+        Rigidbody2D rb = b.GetComponent<Rigidbody2D>();
+
+        //Add force to up vector
+        //Debug.Log(firePoint.up);
+        b.transform.Rotate(0, 0, Random.Range(-10, 10));
+        rb.AddForce(b.transform.up * bulletForce, ForceMode2D.Impulse);
+
+        
+        
+    }
+
+    private void SingleShot()
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            Shoot();    
+            Shoot();
+            GameManager.Instance.AmmoDown(0, 1);
         }
     }
 
-    void AutomaticShot()
+    private void AutomaticShot()
     {
         if (Input.GetButton("Fire1"))
         {
-            if (Time.time - lastfired > 1 / FireRate)
+            if (Time.time - lastfired > 1 / AutomaticFireRate)
             {
                 lastfired = Time.time;
                 Shoot();
+                GameManager.Instance.AmmoDown(1, 1);
             }
         }
     }
 
-    void ShotgunShot()
+    private void ShotgunShot()
     {
-        Debug.Log("POW");
+        if (Input.GetButtonDown("Fire1"))
+        {
+            SpreadShoot();
+            SpreadShoot();
+            SpreadShoot();
+            SpreadShoot();
+            SpreadShoot();
+            GameManager.Instance.AmmoDown(2, 1);
+        }
     }
 }
