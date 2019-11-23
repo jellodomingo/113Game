@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\PlayerBehavior.cs" />
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Shooting.cs" />
+    <Compile Include="Assets\Scripts\ZombieSpawning.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/Angelo/Documents/Projects/113Game/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
