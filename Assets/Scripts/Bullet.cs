@@ -8,9 +8,9 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //Can add bullet collision effect here
-        if (collision.gameObject.tag == "Bullet")
+        if (collision.gameObject.tag == "Bullet" || collision.gameObject.tag == "Drop")
         {
-            
+            Physics2D.IgnoreCollision(collision.gameObject.GetComponent<BoxCollider2D>(), GetComponent<BoxCollider2D>(), true);
         }
         else if (collision.gameObject.tag == "Zombie")
         {

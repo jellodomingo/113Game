@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8314534198746256659}
   - component: {fileID: 8314534198746256658}
   - component: {fileID: 8314534198746256656}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ZombieController
   m_TagString: Zombie
   m_Icon: {fileID: 0}
@@ -51,6 +51,10 @@ MonoBehaviour:
   MinDist: 1
   MaxDist: 100
   MoveSpeed: 0.3
+  healthDrop: {fileID: 1754600055979650395, guid: e6b7768e190f23944ba7a07df1982fe1,
+    type: 3}
+  ammoDrop: {fileID: 7152436761656455802, guid: 8f6ab651e50548842acde09c9c42f914,
+    type: 3}
   rb: {fileID: 8314534198746256658}
 --- !u!50 &8314534198746256658
 Rigidbody2D:
@@ -86,7 +90,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00090813637, y: 0.014486633}
+  m_Offset: {x: -0.009772599, y: -0.006479729}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -97,7 +101,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.19873834, y: 0.16695331}
+  m_Size: {x: 0.15155756, y: 0.17463121}
   m_EdgeRadius: 0
 --- !u!1 &8314534200134941685
 GameObject:
@@ -110,7 +114,7 @@ GameObject:
   - component: {fileID: 8314534200134941682}
   - component: {fileID: 8314534200134941680}
   - component: {fileID: 8314534200134941683}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ZombieAnimation
   m_TagString: Untagged
   m_Icon: {fileID: 0}

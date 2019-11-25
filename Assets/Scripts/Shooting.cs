@@ -93,7 +93,7 @@ public class Shooting : MonoBehaviour
 
         //Add force to up vector
         //Debug.Log(firePoint.up);
-        b.transform.Rotate(0, 0, Random.Range(-10, 10));
+        b.transform.Rotate(0, 0, Random.Range(-30, 30));
         rb.AddForce(b.transform.up * bulletForce, ForceMode2D.Impulse);
 
         

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class GameManager : MonoBehaviour
 {
 
@@ -18,11 +20,22 @@ public class GameManager : MonoBehaviour
 
     public GameObject player;
 
+    public int KillCount = 0;
+
     public int PlayerHealth = 100;
 
+    public int MAX_PISTOL_AMMO = 30;
+    public int MAX_AR_AMMO = 100;
+    public int MAX_SHOTGUN_AMMO = 15;
+
     public int PistolAmmoCount = 30;
-    public int AutomaticAmmoCount = 100;
-    public int ShotgunAmmoCount = 10;
+    public int AutomaticAmmoCount = 50;
+    public int ShotgunAmmoCount = 5;
+
+
+    public int dropRate = 10; //Outta of hundred
+
+    private bool GameOver = false;
 
     void Awake()
     {
@@ -31,12 +44,22 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        if (CheckPlayerHealth())
+        {
+            player.SetActive(false);
+            GameOver = true;
+            // Add retry button
+        }
+    }
+
     //Player Health Up
     public void PlayerHealthUp(int amount)
     {
         //TODO: Cap health
-
-        PlayerHealth += amount;
+        int newHealth = PlayerHealth + amount;
+        PlayerHealth = newHealth >= 100 ? 100 : newHealth;
     }
 
     //Player Health Down
@@ -44,25 +67,30 @@ public class GameManager : MonoBehaviour
     {
         //TODO: Cap health to 0
 
-        PlayerHealth -= amount;
+        int newHealth = PlayerHealth - amount;
+        PlayerHealth = newHealth <= 0 ? 0 : newHealth;
     }
 
     //Ammo Up
     public void AmmoUp(int weapon,int amount)
     {
         //TODO: Cap ammo
+        int newAmmo;
+
         switch (weapon)
         {
             case 0:
-                PistolAmmoCount += amount;
+                newAmmo = PistolAmmoCount + amount;
+                PistolAmmoCount = newAmmo >= MAX_PISTOL_AMMO ? MAX_PISTOL_AMMO : newAmmo;
 
                 break;
             case 1:
-                AutomaticAmmoCount += amount;
-
+                newAmmo = AutomaticAmmoCount + amount;
+                AutomaticAmmoCount = newAmmo >= MAX_AR_AMMO ? MAX_AR_AMMO : newAmmo;
                 break;
             case 2:
-                ShotgunAmmoCount += amount;
+                newAmmo = PistolAmmoCount + amount;
+                ShotgunAmmoCount = newAmmo >= MAX_SHOTGUN_AMMO ? MAX_SHOTGUN_AMMO : newAmmo;
                 break;
         }
 
@@ -70,9 +98,7 @@ public class GameManager : MonoBehaviour
 
     //Ammo Down
     public void AmmoDown(int weapon, int amount)
-    {
-        //TODO: Cap ammo to 0
-
+    { 
         switch (weapon)
         {
             case 0:
@@ -89,6 +115,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Checks if out of Ammo
     public bool CanShoot(int weapon)
     {
         switch (weapon)
@@ -111,14 +138,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
-    public void DisplayStatus()
+    //Raises kill score up by 1
+    public void KillUp()
     {
-        Debug.Log("Player Health: " + PlayerHealth);
-        Debug.Log("Pistol Ammo: " + PistolAmmoCount);
-        Debug.Log("AR Ammo: " + AutomaticAmmoCount);
-        Debug.Log("Shotgun Ammo: " + ShotgunAmmoCount);
+        KillCount++;
+    }
 
+    //Chance to drop
+    public bool ShouldDrop()
+    {
+        int rand = Random.Range(0, 100);
+        if (rand <= dropRate) return true;
+        else return false;
+    }
+
+    private bool CheckPlayerHealth()
+    {
+        if (PlayerHealth <= 0)
+        {
+            return true;
+        }
+        else return false;
     }
 
 }

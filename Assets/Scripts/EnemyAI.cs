@@ -12,7 +12,10 @@ public class EnemyAI : MonoBehaviour
 
     public int MinDist = -1;
     public int MaxDist = 100;
-    public float MoveSpeed = 4f;
+    public float MoveSpeed = 10f;
+
+    public GameObject healthDrop;
+    public GameObject ammoDrop;
 
     public Rigidbody2D rb;
 
@@ -28,6 +31,8 @@ public class EnemyAI : MonoBehaviour
     {
         if (Health <= 0)
         {
+            GameManager.Instance.KillUp();
+            DropItem();
             Destroy(this.gameObject);
         }
 
@@ -42,7 +47,7 @@ public class EnemyAI : MonoBehaviour
         if (Vector3.Distance(transform.position, GameManager.Instance.player.transform.position) >= MinDist)
         {
 
-            rb.MovePosition(rb.position +  lookDir * MoveSpeed * Time.fixedDeltaTime);
+            rb.MovePosition(rb.position + lookDir * MoveSpeed * Time.fixedDeltaTime);
             //transform.position += transform.forward * MoveSpeed * Time.deltaTime;
         }
     }
@@ -55,6 +60,22 @@ public class EnemyAI : MonoBehaviour
             {
                 StartCoroutine(WaitForSeconds());
                 GameManager.Instance.PlayerHealthDown(AttackPower);
+            }
+        }
+    }
+
+    private void DropItem()
+    {
+        if (GameManager.Instance.ShouldDrop())
+        {
+            Debug.Log("DORP ME");
+            if (Random.Range(0, 2) == 0)
+            {
+                GameObject h = Instantiate(healthDrop, this.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            }
+            else
+            {
+                GameObject a = Instantiate(ammoDrop, this.transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
             }
         }
     }
